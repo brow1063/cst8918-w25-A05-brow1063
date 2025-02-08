@@ -82,6 +82,17 @@ resource "azurerm_network_security_group" "nsg" {
   }
 }
 
+data "cloudinit_config" "init" {
+  gzip          = false
+  base64_encode = true
+
+  part {
+    filename     = "init.sh"
+    content_type = "text/x-shellscript"
+    content      = file("init.sh")
+  }
+}
+
 resource "azurerm_network_interface" "nic" {
   name                = "${var.labelPrefix}-A05-NIC"
   location            = azurerm_resource_group.rg.location
